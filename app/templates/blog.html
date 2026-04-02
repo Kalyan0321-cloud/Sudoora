@@ -14,9 +14,9 @@
 
     <!-- Category Filter -->
     <div class="blog-filters">
-      <a href="{{ url_for('blog') }}" class="filter-chip {% if not category %}active{% endif %}">All</a>
+      <a href="{{ url_for('main.blog') }}" class="filter-chip {% if not category %}active{% endif %}">All</a>
       {% for cat in ['Visa', 'Scholarships', 'Test Prep', 'Policy', 'Immigration', 'Destination'] %}
-      <a href="{{ url_for('blog', category=cat) }}" class="filter-chip {% if category == cat %}active{% endif %}">{{ cat }}</a>
+      <a href="{{ url_for('main.blog', category=cat) }}" class="filter-chip {% if category == cat %}active{% endif %}">{{ cat }}</a>
       {% endfor %}
     </div>
 
@@ -30,11 +30,11 @@
           <span class="blog-cat-badge cat-{{ post.category|lower|replace(' ','-') }}">{{ post.category }}</span>
           {% if post.country %}<span class="blog-country-badge">{{ post.country }}</span>{% endif %}
         </div>
-        <h3><a href="{{ url_for('blog_post', post_id=post.id) }}">{{ post.title }}</a></h3>
+        <h3><a href="{{ url_for('main.blog_post', post_id=post.id) }}">{{ post.title }}</a></h3>
         <p>{{ post.excerpt }}</p>
         <div class="blog-card-footer">
           <span class="blog-date"><i class="far fa-calendar-alt"></i> {{ post.created_at[:10] }}</span>
-          <a href="{{ url_for('blog_post', post_id=post.id) }}" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+          <a href="{{ url_for('main.blog_post', post_id=post.id) }}" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
         </div>
       </article>
       {% endfor %}
@@ -76,7 +76,7 @@
     <div class="empty-state">
       <i class="fas fa-newspaper fa-3x"></i>
       <h3>No posts found</h3>
-      <p><a href="{{ url_for('blog') }}">Clear filters</a> to see all articles.</p>
+      <p><a href="{{ url_for('main.blog') }}">Clear filters</a> to see all articles.</p>
     </div>
     {% endif %}
 

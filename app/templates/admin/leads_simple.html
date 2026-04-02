@@ -5,17 +5,17 @@
   <aside class="admin-sidebar">
     <div class="admin-brand"><div class="brand-icon">S</div><span>Admin Panel</span></div>
     <nav class="admin-nav">
-      <a href="{{ url_for('admin_dashboard') }}" class="admin-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-      <a href="{{ url_for('admin_leads') }}" class="admin-nav-item active"><i class="fas fa-users"></i> Leads</a>
-      <a href="{{ url_for('admin_universities') }}" class="admin-nav-item"><i class="fas fa-university"></i> Universities</a>
-      <a href="{{ url_for('index') }}" class="admin-nav-item" target="_blank"><i class="fas fa-globe"></i> View Website</a>
-      <a href="{{ url_for('admin_logout') }}" class="admin-nav-item logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      <a href="{{ url_for('main.admin_dashboard') }}" class="admin-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      <a href="{{ url_for('main.admin_leads') }}" class="admin-nav-item active"><i class="fas fa-users"></i> Leads</a>
+      <a href="{{ url_for('main.admin_universities') }}" class="admin-nav-item"><i class="fas fa-university"></i> Universities</a>
+      <a href="{{ url_for('main.index') }}" class="admin-nav-item" target="_blank"><i class="fas fa-globe"></i> View Website</a>
+      <a href="{{ url_for('main.admin_logout') }}" class="admin-nav-item logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </nav>
   </aside>
   <main class="admin-main">
     <div class="admin-header">
       <h1>Student Leads <span class="lead-count">{{ leads|length }}</span></h1>
-      <a href="{{ url_for('contact') }}" class="btn btn-gold" target="_blank">+ Contact Form</a>
+      <a href="{{ url_for('main.contact') }}" class="btn btn-gold" target="_blank">+ Contact Form</a>
     </div>
     <div class="admin-card">
       <div class="admin-table-wrap">
@@ -43,7 +43,7 @@
               <td><span class="status-badge status-{{ lead.status }}">{{ lead.status.title() }}</span></td>
               <td>{{ lead.created_at[:10] if lead.created_at else '' }}</td>
               <td>
-                <form method="POST" action="{{ url_for('update_lead_status', lid=lead.id) }}" class="inline-form">
+                <form method="POST" action="{{ url_for('main.update_lead_status', lid=lead.id) }}" class="inline-form">
                   <select name="status" onchange="this.form.submit()" class="status-select">
                     <option value="new" {% if lead.status=='new' %}selected{% endif %}>New</option>
                     <option value="contacted" {% if lead.status=='contacted' %}selected{% endif %}>Contacted</option>

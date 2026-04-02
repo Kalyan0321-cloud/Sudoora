@@ -34,7 +34,7 @@
             <option value="50000" {% if filters.max_tuition == 50000 %}selected{% endif %}>Under $50K</option>
           </select>
           <button type="submit" class="btn btn-primary">Search</button>
-          <a href="{{ url_for('universities') }}" class="btn btn-outline">Reset</a>
+          <a href="{{ url_for('main.universities') }}" class="btn btn-outline">Reset</a>
         </div>
       </form>
     </div>
@@ -78,8 +78,8 @@
             {% if uni.intake_spring %}<span class="intake-badge spring"><i class="fas fa-seedling"></i> Spring</span>{% endif %}
             {% if uni.intake_summer %}<span class="intake-badge summer"><i class="fas fa-sun"></i> Summer</span>{% endif %}
           </div>
-          <a href="{{ url_for('contact') }}" class="btn btn-primary btn-sm">Apply Now</a>
-          <a href="{{ url_for('destination_detail', country_name=uni.country) }}" class="btn btn-outline btn-sm">Country Info</a>
+          <a href="{{ url_for('main.contact') }}" class="btn btn-primary btn-sm">Apply Now</a>
+          <a href="{{ url_for('main.destination_detail', country_name=uni.country) }}" class="btn btn-outline btn-sm">Country Info</a>
         </div>
       </div>
       {% endfor %}
@@ -88,7 +88,7 @@
       <div class="empty-state">
         <i class="fas fa-search fa-3x"></i>
         <h3>No universities found</h3>
-        <p>Try adjusting your filters or <a href="{{ url_for('universities') }}">reset all filters</a>.</p>
+        <p>Try adjusting your filters or <a href="{{ url_for('main.universities') }}">reset all filters</a>.</p>
       </div>
       {% endif %}
     </div>

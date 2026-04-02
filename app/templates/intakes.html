@@ -14,9 +14,9 @@
 
     <!-- Filter -->
     <div class="intake-filter">
-      <a href="{{ url_for('intakes') }}" class="btn {% if not country_filter %}btn-primary{% else %}btn-outline{% endif %}">All Countries</a>
+      <a href="{{ url_for('main.intakes') }}" class="btn {% if not country_filter %}btn-primary{% else %}btn-outline{% endif %}">All Countries</a>
       {% for c in countries %}
-      <a href="{{ url_for('intakes', country=c) }}" class="btn {% if country_filter == c %}btn-primary{% else %}btn-outline{% endif %}">
+      <a href="{{ url_for('main.intakes', country=c) }}" class="btn {% if country_filter == c %}btn-primary{% else %}btn-outline{% endif %}">
         {{ {'USA':'🇺🇸','UK':'🇬🇧','Canada':'🇨🇦','Australia':'🇦🇺','Germany':'🇩🇪','New Zealand':'🇳🇿','Ireland':'🇮🇪','Singapore':'🇸🇬'}.get(c,'🌍') }} {{ c }}
       </a>
       {% endfor %}
@@ -151,7 +151,7 @@
         <h3>Don't Miss Your Intake Deadline!</h3>
         <p>Book a free counselling session and we'll create a personalized application timeline for you.</p>
       </div>
-      <a href="{{ url_for('contact') }}" class="btn btn-gold btn-lg">Get a Free Timeline Plan</a>
+      <a href="{{ url_for('main.contact') }}" class="btn btn-gold btn-lg">Get a Free Timeline Plan</a>
     </div>
   </div>
 </section>

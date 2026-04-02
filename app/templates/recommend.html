@@ -116,8 +116,8 @@
               </div>
 
               <div class="rec-actions">
-                <a href="{{ url_for('destination_detail', country_name=rec.u.country) }}" class="btn btn-outline btn-sm">Country Info</a>
-                <a href="{{ url_for('contact') }}" class="btn btn-primary btn-sm">Apply Now</a>
+                <a href="{{ url_for('main.destination_detail', country_name=rec.u.country) }}" class="btn btn-outline btn-sm">Country Info</a>
+                <a href="{{ url_for('main.contact') }}" class="btn btn-primary btn-sm">Apply Now</a>
               </div>
             </div>
             {% endfor %}
@@ -127,7 +127,7 @@
             <div class="no-results-icon">🤔</div>
             <h3>No exact matches found</h3>
             <p>Try increasing your budget or adjusting your preferences. Our counselors can help with scholarship options!</p>
-            <a href="{{ url_for('contact') }}" class="btn btn-gold">Talk to a Counselor</a>
+            <a href="{{ url_for('main.contact') }}" class="btn btn-gold">Talk to a Counselor</a>
           </div>
           {% endif %}
         {% else %}

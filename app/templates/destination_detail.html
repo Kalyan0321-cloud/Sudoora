@@ -121,8 +121,8 @@
         <div class="sidebar-card cta-sidebar">
           <h3>Start Your {{ country_name }} Journey</h3>
           <p>Get free expert guidance for universities, visa, and scholarships in {{ country_name }}.</p>
-          <a href="{{ url_for('contact') }}" class="btn btn-gold w-full">Book Free Counselling</a>
-          <a href="{{ url_for('recommend') }}" class="btn btn-outline w-full mt-2">Try AI Advisor</a>
+          <a href="{{ url_for('main.contact') }}" class="btn btn-gold w-full">Book Free Counselling</a>
+          <a href="{{ url_for('main.recommend') }}" class="btn btn-outline w-full mt-2">Try AI Advisor</a>
         </div>
 
         <div class="sidebar-card">
@@ -138,14 +138,14 @@
           <h4>Popular Courses</h4>
           <div class="tag-group">
             {% for course in country.popular_courses %}
-            <a href="{{ url_for('universities', country=country_name) }}" class="tag">{{ course }}</a>
+            <a href="{{ url_for('main.universities', country=country_name) }}" class="tag">{{ course }}</a>
             {% endfor %}
           </div>
         </div>
 
         <div class="sidebar-card">
           <h4>Quick Calculator</h4>
-          <a href="{{ url_for('cost_calculator') }}" class="btn btn-primary w-full">
+          <a href="{{ url_for('main.cost_calculator') }}" class="btn btn-primary w-full">
             <i class="fas fa-calculator"></i> Calculate Full Cost
           </a>
         </div>

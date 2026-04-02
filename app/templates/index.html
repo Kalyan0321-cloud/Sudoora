@@ -16,10 +16,10 @@
       <h1>Transform Your Future with <em>Sudoora</em></h1>
       <p>Expert counselling for 50+ countries, 1000+ universities. Join 15,000+ Indian students who achieved their dream of studying abroad.</p>
       <div class="hero-cta-group">
-        <a href="{{ url_for('contact') }}" class="btn btn-gold btn-lg">
+        <a href="{{ url_for('main.contact') }}" class="btn btn-gold btn-lg">
           <i class="fas fa-calendar-check"></i> Book Free Counselling
         </a>
-        <a href="{{ url_for('recommend') }}" class="btn btn-outline btn-lg">
+        <a href="{{ url_for('main.recommend') }}" class="btn btn-outline btn-lg">
           <i class="fas fa-robot"></i> Try AI Advisor
         </a>
       </div>
@@ -99,7 +99,7 @@
 
     <div class="destinations-grid">
       {% for name, data in destinations.items() %}
-      <a href="{{ url_for('destination_detail', country_name=name) }}" class="dest-card" data-country="{{ name }}">
+      <a href="{{ url_for('main.destination_detail', country_name=name) }}" class="dest-card" data-country="{{ name }}">
         <div class="dest-flag">{{ data.flag }}</div>
         <div class="dest-body">
           <h3>{{ name }}</h3>
@@ -123,7 +123,7 @@
     </div>
 
     <div class="text-center mt-4">
-      <a href="{{ url_for('destinations') }}" class="btn btn-outline">View All Destinations <i class="fas fa-arrow-right"></i></a>
+      <a href="{{ url_for('main.destinations') }}" class="btn btn-outline">View All Destinations <i class="fas fa-arrow-right"></i></a>
     </div>
   </div>
 </section>
@@ -202,7 +202,7 @@
       {% endfor %}
     </div>
     <div class="text-center mt-4">
-      <a href="{{ url_for('universities') }}" class="btn btn-primary">Explore All Universities <i class="fas fa-arrow-right"></i></a>
+      <a href="{{ url_for('main.universities') }}" class="btn btn-primary">Explore All Universities <i class="fas fa-arrow-right"></i></a>
     </div>
   </div>
 </section>
@@ -221,7 +221,7 @@
             <li><i class="fas fa-check-circle"></i> Based on real acceptance data</li>
             <li><i class="fas fa-check-circle"></i> Includes scholarship suggestions</li>
           </ul>
-          <a href="{{ url_for('recommend') }}" class="btn btn-gold btn-lg">
+          <a href="{{ url_for('main.recommend') }}" class="btn btn-gold btn-lg">
             <i class="fas fa-magic"></i> Try AI Advisor – Free
           </a>
         </div>
@@ -273,7 +273,7 @@
             <small>Top universities</small>
           </div>
         </div>
-        <a href="{{ url_for('cost_calculator') }}" class="btn btn-primary">
+        <a href="{{ url_for('main.cost_calculator') }}" class="btn btn-primary">
           <i class="fas fa-calculator"></i> Open Full Calculator
         </a>
       </div>
@@ -328,7 +328,7 @@
       {% endfor %}
     </div>
     <div class="text-center mt-4">
-      <a href="{{ url_for('blog') }}" class="btn btn-outline">View All Updates <i class="fas fa-arrow-right"></i></a>
+      <a href="{{ url_for('main.blog') }}" class="btn btn-outline">View All Updates <i class="fas fa-arrow-right"></i></a>
     </div>
   </div>
 </section>
@@ -376,7 +376,7 @@
       <h2>Ready to Begin Your Global Education Journey?</h2>
       <p>Book a free 30-minute counselling session with our experts today. No obligation, just expert advice.</p>
       <div class="final-cta-btns">
-        <a href="{{ url_for('contact') }}" class="btn btn-gold btn-xl">
+        <a href="{{ url_for('main.contact') }}" class="btn btn-gold btn-xl">
           <i class="fas fa-calendar-check"></i> Book Free Counselling
         </a>
         <a href="https://wa.me/919876543210" class="btn btn-whatsapp btn-xl" target="_blank">

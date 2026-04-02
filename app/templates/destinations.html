@@ -27,7 +27,7 @@
             <h2>{{ name }}</h2>
             <span>{{ data.language }} | {{ data.currency }}</span>
           </div>
-          <a href="{{ url_for('destination_detail', country_name=name) }}" class="btn btn-primary btn-sm">Explore →</a>
+          <a href="{{ url_for('main.destination_detail', country_name=name) }}" class="btn btn-primary btn-sm">Explore →</a>
         </div>
 
         <div class="dest-info-grid">

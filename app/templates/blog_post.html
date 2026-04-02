@@ -5,7 +5,7 @@
 <div class="page-hero">
   <div class="container">
     <div class="breadcrumb">
-      <a href="{{ url_for('blog') }}">Blog</a> / <span>{{ post.category }}</span>
+      <a href="{{ url_for('main.blog') }}">Blog</a> / <span>{{ post.category }}</span>
     </div>
     <div class="post-hero-meta">
       <span class="blog-cat-badge">{{ post.category }}</span>
@@ -30,7 +30,7 @@
         <div class="post-cta-box">
           <h3>Need Expert Guidance?</h3>
           <p>Our counselors can help you navigate visa applications, university selection, and scholarships for {{ post.country if post.country else 'your dream destination' }}.</p>
-          <a href="{{ url_for('contact') }}" class="btn btn-gold">Book Free Counselling</a>
+          <a href="{{ url_for('main.contact') }}" class="btn btn-gold">Book Free Counselling</a>
         </div>
       </article>
 
@@ -40,7 +40,7 @@
           <h4>Related Articles</h4>
           {% for r in related %}
           <div class="related-post">
-            <a href="{{ url_for('blog_post', post_id=r.id) }}">{{ r.title[:60] }}...</a>
+            <a href="{{ url_for('main.blog_post', post_id=r.id) }}">{{ r.title[:60] }}...</a>
             <small>{{ r.created_at[:10] }}</small>
           </div>
           {% endfor %}
@@ -50,16 +50,16 @@
         <div class="sidebar-card cta-sidebar">
           <h3>Free Counselling</h3>
           <p>Get personalized advice from our experts. No obligation.</p>
-          <a href="{{ url_for('contact') }}" class="btn btn-gold w-full">Book Now</a>
+          <a href="{{ url_for('main.contact') }}" class="btn btn-gold w-full">Book Now</a>
         </div>
 
         <div class="sidebar-card">
           <h4>Quick Tools</h4>
           <ul class="sidebar-links">
-            <li><a href="{{ url_for('cost_calculator') }}"><i class="fas fa-calculator"></i> Cost Calculator</a></li>
-            <li><a href="{{ url_for('recommend') }}"><i class="fas fa-robot"></i> AI Advisor</a></li>
-            <li><a href="{{ url_for('intakes') }}"><i class="fas fa-calendar-alt"></i> Intake Tracker</a></li>
-            <li><a href="{{ url_for('universities') }}"><i class="fas fa-university"></i> University Search</a></li>
+            <li><a href="{{ url_for('main.cost_calculator') }}"><i class="fas fa-calculator"></i> Cost Calculator</a></li>
+            <li><a href="{{ url_for('main.recommend') }}"><i class="fas fa-robot"></i> AI Advisor</a></li>
+            <li><a href="{{ url_for('main.intakes') }}"><i class="fas fa-calendar-alt"></i> Intake Tracker</a></li>
+            <li><a href="{{ url_for('main.universities') }}"><i class="fas fa-university"></i> University Search</a></li>
           </ul>
         </div>
       </aside>

@@ -5,11 +5,11 @@
   <aside class="admin-sidebar">
     <div class="admin-brand"><div class="brand-icon">S</div><span>Admin Panel</span></div>
     <nav class="admin-nav">
-      <a href="{{ url_for('admin_dashboard') }}" class="admin-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-      <a href="{{ url_for('admin_leads') }}" class="admin-nav-item"><i class="fas fa-users"></i> Leads</a>
-      <a href="{{ url_for('admin_universities') }}" class="admin-nav-item active"><i class="fas fa-university"></i> Universities</a>
-      <a href="{{ url_for('index') }}" class="admin-nav-item"><i class="fas fa-globe"></i> View Website</a>
-      <a href="{{ url_for('admin_logout') }}" class="admin-nav-item logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      <a href="{{ url_for('main.admin_dashboard') }}" class="admin-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      <a href="{{ url_for('main.admin_leads') }}" class="admin-nav-item"><i class="fas fa-users"></i> Leads</a>
+      <a href="{{ url_for('main.admin_universities') }}" class="admin-nav-item active"><i class="fas fa-university"></i> Universities</a>
+      <a href="{{ url_for('main.index') }}" class="admin-nav-item"><i class="fas fa-globe"></i> View Website</a>
+      <a href="{{ url_for('main.admin_logout') }}" class="admin-nav-item logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </nav>
   </aside>
   <main class="admin-main">
