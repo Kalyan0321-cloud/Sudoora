@@ -3,13 +3,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Default SQLite path: /app/instance/studyabroad.db (matches the Fly.io volume mount).
-# Override via DATABASE_URL env var for PostgreSQL or a different path.
-_default_db = 'sqlite:////app/instance/studyabroad.db'
+# Render (and some other hosts) provide DATABASE_URL starting with "postgres://"
+# but SQLAlchemy requires "postgresql://". Fix it transparently here.
+def _get_db_uri():
+    url = os.environ.get('DATABASE_URL', 'sqlite:///studyabroad.db')
+    if url.startswith('postgres://'):
+        url = url.replace('postgres://', 'postgresql://', 1)
+    return url
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', _default_db)
+    SQLALCHEMY_DATABASE_URI = _get_db_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # API Keys
