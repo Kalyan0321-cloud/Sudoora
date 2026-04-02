@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard – GlobEd{% endblock %}
+{% block content %}
+
+<div class="admin-layout">
+  <!-- Admin Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-brand">
+      <div class="brand-icon">S</div>
+      <span>Admin Panel</span>
+    </div>
+    <nav class="admin-nav">
+      <a href="{{ url_for('admin_dashboard') }}" class="admin-nav-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      <a href="{{ url_for('admin_leads') }}" class="admin-nav-item"><i class="fas fa-users"></i> Leads</a>
+      <a href="{{ url_for('admin_universities') }}" class="admin-nav-item"><i class="fas fa-university"></i> Universities</a>
+      <a href="{{ url_for('index') }}" class="admin-nav-item"><i class="fas fa-globe"></i> View Website</a>
+      <a href="{{ url_for('admin_logout') }}" class="admin-nav-item logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </nav>
+  </aside>
+
+  <!-- Admin Main Content -->
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1>Dashboard</h1>
+      <span class="admin-date">Sudoora Consultancy</span>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="admin-stats-grid">
+      <div class="admin-stat-card stat-blue">
+        <div class="stat-icon"><i class="fas fa-users"></i></div>
+        <div class="stat-info">
+          <div class="stat-number">{{ total_leads }}</div>
+          <div class="stat-label">Total Leads</div>
+        </div>
+      </div>
+      <div class="admin-stat-card stat-gold">
+        <div class="stat-icon"><i class="fas fa-bell"></i></div>
+        <div class="stat-info">
+          <div class="stat-number">{{ new_leads }}</div>
+          <div class="stat-label">New Leads</div>
+        </div>
+      </div>
+      <div class="admin-stat-card stat-green">
+        <div class="stat-icon"><i class="fas fa-university"></i></div>
+        <div class="stat-info">
+          <div class="stat-number">{{ total_unis }}</div>
+          <div class="stat-label">Universities</div>
+        </div>
+      </div>
+      <div class="admin-stat-card stat-purple">
+        <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+        <div class="stat-info">
+          <div class="stat-number">{{ total_posts }}</div>
+          <div class="stat-label">Blog Posts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Leads -->
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <h2>Recent Leads</h2>
+        <a href="{{ url_for('admin_leads') }}" class="btn btn-primary btn-sm">View All</a>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Country</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for lead in leads[:8] %}
+            <tr>
+              <td><strong>{{ lead.name }}</strong></td>
+              <td>{{ lead.email }}</td>
+              <td>{{ lead.phone }}</td>
+              <td>{{ lead.preferred_country or '—' }}</td>
+              <td>
+                <span class="status-badge status-{{ lead.status }}">{{ lead.status.title() }}</span>
+              </td>
+              <td>{{ lead.created_at.strftime('%d %b %Y') }}</td>
+            </tr>
+            {% endfor %}
+            {% if not leads %}
+            <tr><td colspan="6" class="text-center">No leads yet. Share the website to get started!</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="admin-quick-actions">
+      <h2>Quick Actions</h2>
+      <div class="quick-actions-grid">
+        <a href="{{ url_for('admin_leads') }}" class="qa-card">
+          <i class="fas fa-users"></i>
+          <span>Manage Leads</span>
+        </a>
+        <a href="{{ url_for('admin_universities') }}" class="qa-card">
+          <i class="fas fa-university"></i>
+          <span>Universities</span>
+        </a>
+        <a href="{{ url_for('blog') }}" class="qa-card" target="_blank">
+          <i class="fas fa-blog"></i>
+          <span>View Blog</span>
+        </a>
+        <a href="{{ url_for('index') }}" class="qa-card" target="_blank">
+          <i class="fas fa-globe"></i>
+          <span>View Site</span>
+        </a>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

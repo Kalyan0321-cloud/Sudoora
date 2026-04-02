@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Study Destinations – GlobEd{% endblock %}
+{% block content %}
+<div class="page-hero">
+  <div class="container">
+    <h1>Study <em>Destinations</em></h1>
+    <p>Explore the world's best countries for Indian students — visa info, costs, universities, and more.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <!-- Country Filter Tabs -->
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All Countries</button>
+      <button class="filter-tab" data-filter="english">English Speaking</button>
+      <button class="filter-tab" data-filter="low-cost">Low Cost</button>
+      <button class="filter-tab" data-filter="pr-friendly">PR Friendly</button>
+    </div>
+
+    <div class="destinations-detail-grid">
+      {% for name, data in destinations.items() %}
+      <div class="dest-detail-card {% if name in ['USA','UK','Canada','Australia','New Zealand','Ireland','Singapore'] %}english{% endif %} {% if name in ['Germany','New Zealand','Ireland'] %}low-cost{% endif %} {% if name in ['Canada','Australia','New Zealand','Germany'] %}pr-friendly{% endif %}">
+        <div class="dest-card-header" style="background: {{ data.color }}15; border-left: 4px solid {{ data.color }};">
+          <div class="dest-flag-lg">{{ data.flag }}</div>
+          <div class="dest-header-info">
+            <h2>{{ name }}</h2>
+            <span>{{ data.language }} | {{ data.currency }}</span>
+          </div>
+          <a href="{{ url_for('destination_detail', country_name=name) }}" class="btn btn-primary btn-sm">Explore →</a>
+        </div>
+
+        <div class="dest-info-grid">
+          <div class="dest-info-item">
+            <i class="fas fa-university" style="color:{{ data.color }}"></i>
+            <div><strong>{{ data.universities }}+</strong><small>Universities</small></div>
+          </div>
+          <div class="dest-info-item">
+            <i class="fas fa-dollar-sign" style="color:{{ data.color }}"></i>
+            <div><strong>${{ "{:,}".format(data.avg_tuition) }}</strong><small>Avg Tuition/yr</small></div>
+          </div>
+          <div class="dest-info-item">
+            <i class="fas fa-home" style="color:{{ data.color }}"></i>
+            <div><strong>${{ "{:,}".format(data.living_cost) }}</strong><small>Living Cost/yr</small></div>
+          </div>
+          <div class="dest-info-item">
+            <i class="fas fa-passport" style="color:{{ data.color }}"></i>
+            <div><strong>${{ data.visa_fee }}</strong><small>Visa Fee</small></div>
+          </div>
+        </div>
+
+        <div class="dest-details">
+          <div class="detail-row"><i class="fas fa-id-card"></i><div><strong>Visa:</strong> {{ data.visa_type }}</div></div>
+          <div class="detail-row"><i class="fas fa-briefcase"></i><div><strong>Work:</strong> {{ data.work_permit }}</div></div>
+          <div class="detail-row"><i class="fas fa-home-alt"></i><div><strong>PR Path:</strong> {{ data.pr_pathway }}</div></div>
+          <div class="detail-row">
+            <i class="fas fa-calendar-alt"></i>
+            <div><strong>Intakes:</strong> {{ data.intake_months | join(', ') }}</div>
+          </div>
+        </div>
+
+        <div class="dest-courses">
+          <strong>Popular Courses:</strong>
+          <div class="tag-group">
+            {% for course in data.popular_courses %}
+            <span class="tag">{{ course }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.querySelectorAll('.filter-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.dest-detail-card').forEach(card => {
+      card.style.display = (filter === 'all' || card.classList.contains(filter)) ? 'flex' : 'none';
+    });
+  });
+});
+</script>
+{% endblock %}

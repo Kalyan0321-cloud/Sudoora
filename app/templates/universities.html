@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}University Finder – Sudoora{% endblock %}
+{% block content %}
+
+<div class="page-hero">
+  <div class="container">
+    <h1>Find Your <em>Perfect University</em></h1>
+    <p>Search through 1000+ universities across 50+ countries. Filter by country, fees, intake, and more.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <!-- Search & Filters -->
+    <div class="uni-filters">
+      <form method="GET" class="filter-form">
+        <div class="filter-row">
+          <input type="text" name="q" value="{{ filters.q }}" placeholder="🔍 Search by university name or course..." class="filter-input search-input">
+          <select name="country" class="filter-select">
+            <option value="">All Countries</option>
+            {% for c in countries %}
+            <option value="{{ c }}" {% if filters.country == c %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+          </select>
+          <select name="intake" class="filter-select">
+            <option value="">Any Intake</option>
+            <option value="fall" {% if filters.intake == 'fall' %}selected{% endif %}>Fall Intake</option>
+            <option value="spring" {% if filters.intake == 'spring' %}selected{% endif %}>Spring Intake</option>
+          </select>
+          <select name="max_tuition" class="filter-select">
+            <option value="">Any Budget</option>
+            <option value="10000" {% if filters.max_tuition == 10000 %}selected{% endif %}>Under $10K</option>
+            <option value="30000" {% if filters.max_tuition == 30000 %}selected{% endif %}>Under $30K</option>
+            <option value="50000" {% if filters.max_tuition == 50000 %}selected{% endif %}>Under $50K</option>
+          </select>
+          <button type="submit" class="btn btn-primary">Search</button>
+          <a href="{{ url_for('universities') }}" class="btn btn-outline">Reset</a>
+        </div>
+      </form>
+    </div>
+
+    <div class="results-count">Showing <strong>{{ universities|length }}</strong> universities</div>
+
+    <!-- University Cards -->
+    <div class="universities-list">
+      {% for uni in universities %}
+      <div class="uni-detail-card">
+        <div class="uni-detail-rank">#{{ uni.ranking }}</div>
+        <div class="uni-detail-main">
+          <div class="uni-detail-header">
+            <h3>{{ uni.name }}</h3>
+            <div class="uni-detail-location">
+              <i class="fas fa-map-marker-alt"></i>
+              {{ uni.city }}, {{ uni.country }}
+              {{ {'USA':'🇺🇸','UK':'🇬🇧','Canada':'🇨🇦','Australia':'🇦🇺','Germany':'🇩🇪','New Zealand':'🇳🇿','Ireland':'🇮🇪','Singapore':'🇸🇬'}.get(uni.country, '🌍') }}
+            </div>
+          </div>
+
+          <p class="uni-detail-desc">{{ uni.description }}</p>
+
+          <div class="uni-detail-meta">
+            <span class="meta-item"><i class="fas fa-dollar-sign"></i>
+              {% if uni.tuition_min == 0 %}Nearly Free{% else %}${{ "{:,}".format(uni.tuition_min) }}{% endif %}
+              – ${{ "{:,}".format(uni.tuition_max) }}/yr
+            </span>
+            <span class="meta-item"><i class="fas fa-percentage"></i> {{ uni.acceptance_rate }}% Accept Rate</span>
+            <span class="meta-item"><i class="fas fa-language"></i> IELTS {{ uni.ielts_min }}+</span>
+          </div>
+
+          <div class="uni-detail-courses">
+            <strong>Top Courses:</strong> {{ uni.popular_courses }}
+          </div>
+        </div>
+
+        <div class="uni-detail-right">
+          <div class="uni-intakes-vertical">
+            {% if uni.intake_fall %}<span class="intake-badge fall"><i class="fas fa-leaf"></i> Fall</span>{% endif %}
+            {% if uni.intake_spring %}<span class="intake-badge spring"><i class="fas fa-seedling"></i> Spring</span>{% endif %}
+            {% if uni.intake_summer %}<span class="intake-badge summer"><i class="fas fa-sun"></i> Summer</span>{% endif %}
+          </div>
+          <a href="{{ url_for('contact') }}" class="btn btn-primary btn-sm">Apply Now</a>
+          <a href="{{ url_for('destination_detail', country_name=uni.country) }}" class="btn btn-outline btn-sm">Country Info</a>
+        </div>
+      </div>
+      {% endfor %}
+
+      {% if not universities %}
+      <div class="empty-state">
+        <i class="fas fa-search fa-3x"></i>
+        <h3>No universities found</h3>
+        <p>Try adjusting your filters or <a href="{{ url_for('universities') }}">reset all filters</a>.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

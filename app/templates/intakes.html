@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block title %}Intake Tracker – Sudoora{% endblock %}
+{% block content %}
+
+<div class="page-hero">
+  <div class="container">
+    <h1>Intake & Deadline <em>Tracker</em></h1>
+    <p>Track upcoming university intakes for Fall, Spring, and Summer sessions across all destinations.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+
+    <!-- Filter -->
+    <div class="intake-filter">
+      <a href="{{ url_for('intakes') }}" class="btn {% if not country_filter %}btn-primary{% else %}btn-outline{% endif %}">All Countries</a>
+      {% for c in countries %}
+      <a href="{{ url_for('intakes', country=c) }}" class="btn {% if country_filter == c %}btn-primary{% else %}btn-outline{% endif %}">
+        {{ {'USA':'🇺🇸','UK':'🇬🇧','Canada':'🇨🇦','Australia':'🇦🇺','Germany':'🇩🇪','New Zealand':'🇳🇿','Ireland':'🇮🇪','Singapore':'🇸🇬'}.get(c,'🌍') }} {{ c }}
+      </a>
+      {% endfor %}
+    </div>
+
+    <!-- Intake Calendar Grid -->
+    <div class="intake-calendar">
+      <div class="intake-season-col">
+        <div class="season-header fall-header">
+          <i class="fas fa-leaf"></i> Fall / Autumn Intake
+          <span class="season-months">September – October</span>
+        </div>
+        <div class="intake-uni-list">
+          {% for uni in universities if uni.intake_fall %}
+          <div class="intake-uni-item">
+            <div class="intake-uni-flag">{{ {'USA':'🇺🇸','UK':'🇬🇧','Canada':'🇨🇦','Australia':'🇦🇺','Germany':'🇩🇪','New Zealand':'🇳🇿','Ireland':'🇮🇪','Singapore':'🇸🇬'}.get(uni.country,'🌍') }}</div>
+            <div class="intake-uni-info">
+              <strong>{{ uni.name }}</strong>
+              <small>{{ uni.country }} | Rank #{{ uni.ranking }}</small>
+            </div>
+            <div class="intake-deadline">
+              <span class="deadline-badge">Apply by: Jun–Aug</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="intake-season-col">
+        <div class="season-header spring-header">
+          <i class="fas fa-seedling"></i> Spring / Winter Intake
+          <span class="season-months">January – February</span>
+        </div>
+        <div class="intake-uni-list">
+          {% for uni in universities if uni.intake_spring %}
+          <div class="intake-uni-item">
+            <div class="intake-uni-flag">{{ {'USA':'🇺🇸','UK':'🇬🇧','Canada':'🇨🇦','Australia':'🇦🇺','Germany':'🇩🇪','New Zealand':'🇳🇿','Ireland':'🇮🇪','Singapore':'🇸🇬'}.get(uni.country,'🌍') }}</div>
+            <div class="intake-uni-info">
+              <strong>{{ uni.name }}</strong>
+              <small>{{ uni.country }} | Rank #{{ uni.ranking }}</small>
+            </div>
+            <div class="intake-deadline">
+              <span class="deadline-badge spring-badge">Apply by: Oct–Dec</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="intake-season-col">
+        <div class="season-header summer-header">
+          <i class="fas fa-sun"></i> Summer Intake
+          <span class="season-months">May – July</span>
+        </div>
+        <div class="intake-uni-list">
+          {% for uni in universities if uni.intake_summer %}
+          <div class="intake-uni-item">
+            <div class="intake-uni-flag">{{ {'USA':'🇺🇸','UK':'🇬🇧','Canada':'🇨🇦','Australia':'🇦🇺','Germany':'🇩🇪'}.get(uni.country,'🌍') }}</div>
+            <div class="intake-uni-info">
+              <strong>{{ uni.name }}</strong>
+              <small>{{ uni.country }} | Rank #{{ uni.ranking }}</small>
+            </div>
+            <div class="intake-deadline">
+              <span class="deadline-badge summer-badge">Apply by: Feb–Apr</span>
+            </div>
+          </div>
+          {% endfor %}
+          {% if universities | selectattr('intake_summer') | list | length == 0 %}
+          <p class="no-intake">No summer intakes available for selected country.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Dates Timeline -->
+    <div class="timeline-section">
+      <h2>📅 2025 Application Timeline</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="tl-month">Jan–Mar</div>
+          <div class="tl-dot fall-dot"></div>
+          <div class="tl-content">
+            <strong>Research & Shortlisting</strong>
+            <p>Research universities, take IELTS/TOEFL, shortlist programs</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-month">Apr–Jun</div>
+          <div class="tl-dot fall-dot"></div>
+          <div class="tl-content">
+            <strong>Applications Open (Fall)</strong>
+            <p>Submit applications with SOP, LOR, transcripts for Fall intake</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-month">Jul–Aug</div>
+          <div class="tl-dot spring-dot"></div>
+          <div class="tl-content">
+            <strong>Offer Letters & Visa</strong>
+            <p>Receive offers, apply for student visa, arrange accommodation</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-month">Sep–Oct</div>
+          <div class="tl-dot fall-dot"></div>
+          <div class="tl-content">
+            <strong>Fall Semester Begins</strong>
+            <p>Depart for your dream university! 🎓</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-month">Oct–Dec</div>
+          <div class="tl-dot spring-dot"></div>
+          <div class="tl-content">
+            <strong>Applications Open (Spring)</strong>
+            <p>Apply for Spring/January intake universities</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-month">Jan–Feb</div>
+          <div class="tl-dot spring-dot"></div>
+          <div class="tl-content">
+            <strong>Spring Semester Begins</strong>
+            <p>Spring intake students begin their journey 🌱</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-strip">
+      <div>
+        <h3>Don't Miss Your Intake Deadline!</h3>
+        <p>Book a free counselling session and we'll create a personalized application timeline for you.</p>
+      </div>
+      <a href="{{ url_for('contact') }}" class="btn btn-gold btn-lg">Get a Free Timeline Plan</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

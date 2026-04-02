@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Sudoora Consultancy{% endblock %} | Your Gateway to Global Education</title>
+  <meta name="description" content="{% block meta_desc %}Sudoora Consultancy helps Indian students achieve their dream of studying abroad. Expert guidance for USA, UK, Canada, Australia, Germany.{% endblock %}">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- ═══════════════════════ TOP BAR ═══════════════════════ -->
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-left">
+      <span><i class="fas fa-phone-alt"></i> +91 95058 77797</span>
+      <span><i class="fas fa-envelope"></i> info@sudoora.com</span>
+    </div>
+    <div class="topbar-right">
+      <span><i class="fas fa-clock"></i> Mon–Sat: 9AM – 7PM</span>
+      <a href="{{ url_for('admin_login') }}" class="admin-link"><i class="fas fa-user-shield"></i> Admin</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ NAVBAR ═══════════════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="container nav-container">
+    <a href="{{ url_for('index') }}" class="nav-brand">
+      <div class="brand-icon">S</div>
+      <div class="brand-text">
+        <span class="brand-name">Sudoora</span>
+        <span class="brand-sub">Consultancy</span>
+      </div>
+    </a>
+
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}">Home</a></li>
+      <li class="has-dropdown">
+        <a href="{{ url_for('destinations') }}" class="nav-link">Destinations <i class="fas fa-chevron-down"></i></a>
+        <div class="dropdown">
+          {% for country in countries_list %}
+          <a href="{{ url_for('destination_detail', country_name=country) }}">
+            <span class="dropdown-flag">{{ {'USA':'🇺🇸','UK':'🇬🇧','Canada':'🇨🇦','Australia':'🇦🇺','Germany':'🇩🇪','New Zealand':'🇳🇿','Ireland':'🇮🇪','Singapore':'🇸🇬'}[country] }}</span>
+            {{ country }}
+          </a>
+          {% endfor %}
+        </div>
+      </li>
+      <li><a href="{{ url_for('universities') }}" class="nav-link">Universities</a></li>
+      <li><a href="{{ url_for('cost_calculator') }}" class="nav-link">Cost Calculator</a></li>
+      <li><a href="{{ url_for('recommend') }}" class="nav-link">AI Advisor</a></li>
+      <li><a href="{{ url_for('intakes') }}" class="nav-link">Intakes</a></li>
+      <li><a href="{{ url_for('blog') }}" class="nav-link">Blog</a></li>
+      <li><a href="{{ url_for('contact') }}" class="nav-cta">Free Counselling</a></li>
+    </ul>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ MAIN CONTENT ═══════════════════════ -->
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand -->
+        <div class="footer-col brand-col">
+          <div class="footer-brand">
+            <div class="brand-icon">S</div>
+            <div class="brand-text">
+              <span class="brand-name">Sudoora</span>
+              <span class="brand-sub">Consultancy</span>
+            </div>
+          </div>
+          <p>Empowering Indian students to achieve their global education dreams since 2010. Trusted by 15,000+ students across India.</p>
+          <div class="footer-socials">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <!-- Destinations -->
+        <div class="footer-col">
+          <h4>Study Destinations</h4>
+          <ul>
+            {% for country in countries_list %}
+            <li><a href="{{ url_for('destination_detail', country_name=country) }}">{{ country }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- Services -->
+        <div class="footer-col">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="{{ url_for('recommend') }}">AI University Advisor</a></li>
+            <li><a href="{{ url_for('cost_calculator') }}">Cost Calculator</a></li>
+            <li><a href="{{ url_for('universities') }}">University Search</a></li>
+            <li><a href="{{ url_for('intakes') }}">Intake Tracker</a></li>
+            <li><a href="{{ url_for('blog') }}">Visa Guidance</a></li>
+            <li><a href="{{ url_for('contact') }}">Free Counselling</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div class="footer-col">
+          <h4>Get In Touch</h4>
+          <ul class="contact-list">
+            <li><i class="fas fa-map-marker-alt"></i> Tirupati – 517501</li>
+            <li><i class="fas fa-phone-alt"></i> +91 95058 77797</li>
+            <li><i class="fas fa-envelope"></i> info@sudoora.com</li>
+            <li><i class="fas fa-clock"></i> Mon–Sat: 9AM – 7PM IST</li>
+          </ul>
+          <a href="{{ url_for('contact') }}" class="btn btn-gold mt-3">Book Free Session</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <p>&copy; 2024 Sudoora Consultancy. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════ CHATBOT ═══════════════════════ -->
+<div class="chatbot-widget" id="chatbotWidget">
+  <div class="chatbot-toggle" id="chatbotToggle">
+    <i class="fas fa-comments"></i>
+    <span class="chat-badge">1</span>
+  </div>
+  <div class="chatbot-panel" id="chatbotPanel">
+    <div class="chatbot-header">
+      <div class="chatbot-avatar">🤖</div>
+      <div>
+        <strong>Sudoora AI</strong>
+        <small>Study Abroad Assistant</small>
+      </div>
+      <button class="chatbot-close" id="chatbotClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="chatbot-messages" id="chatbotMessages">
+      <div class="bot-msg">
+        <div class="msg-bubble">Hi! 👋 I'm Sudoora AI. Ask me anything about studying abroad — visas, costs, scholarships, or university selection!</div>
+      </div>
+    </div>
+    <div class="chatbot-quick">
+      <button onclick="sendQuickMsg('What are the visa requirements?')">Visa Info</button>
+      <button onclick="sendQuickMsg('Which country is best for PR?')">Best for PR</button>
+      <button onclick="sendQuickMsg('Tell me about scholarships')">Scholarships</button>
+    </div>
+    <div class="chatbot-input">
+      <input type="text" id="chatInput" placeholder="Ask a question..." />
+      <button onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- JS -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

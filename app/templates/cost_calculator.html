@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block title %}Cost Calculator – Sudoora{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <div class="container">
+    <h1>Study Abroad <em>Cost Calculator</em></h1>
+    <p>Get a realistic, personalized estimate of your total study abroad expenses.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="calculator-layout">
+
+      <!-- Form -->
+      <div class="calc-form-panel">
+        <h2><i class="fas fa-sliders-h"></i> Your Details</h2>
+        <form method="POST" id="calcForm">
+          
+
+          <div class="form-group">
+            <label>Destination Country</label>
+            <select name="country" class="form-control">
+              {% for c in dest_list %}
+              <option value="{{ c }}" {% if form_data.get('country')==c %}selected{% endif %}>{{ c }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Course Type</label>
+            <select name="course_type" class="form-control">
+              {% for c in courses %}
+              <option value="{{ c }}" {% if form_data.get('course_type')==c %}selected{% endif %}>{{ c }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Study Duration</label>
+            <select name="duration" class="form-control">
+              {% for val, label in durations %}
+              <option value="{{ val }}" {% if form_data.get('duration')==val %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg w-full">
+            <i class="fas fa-calculator"></i> Calculate My Budget
+          </button>
+        </form>
+
+        <!-- Live Calculator (JS powered) -->
+        <div class="live-calc mt-4">
+          <h3>Quick Estimate</h3>
+          <div class="live-sliders">
+            <label>Tuition/year: $<span id="tuitionVal">30000</span></label>
+            <input type="range" min="0" max="70000" value="30000" step="1000" id="tuitionSlider">
+            <label>Living Cost/year: $<span id="livingVal">15000</span></label>
+            <input type="range" min="5000" max="25000" value="15000" step="500" id="livingSlider">
+            <label>Duration (years): <span id="durationVal">2</span></label>
+            <input type="range" min="1" max="5" value="2" id="durationSlider">
+          </div>
+          <div class="live-result">
+            <div class="live-result-item">Total Tuition: <strong id="totalTuition">$60,000</strong></div>
+            <div class="live-result-item">Total Living: <strong id="totalLiving">$30,000</strong></div>
+            <div class="live-result-grand">Grand Total: <strong id="grandTotal">$90,000</strong></div>
+            <div class="inr-estimate">≈ <strong id="inrTotal">₹75,15,000</strong> INR</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="calc-results-panel">
+        {% if result %}
+        <div class="result-header">
+          <h2>Cost Breakdown for {{ result.country }}</h2>
+          <p>{{ result.course_type }} | {{ result.duration }} Year(s)</p>
+        </div>
+
+        <div class="result-cards">
+          <div class="result-card tuition-card">
+            <i class="fas fa-graduation-cap"></i>
+            <div class="result-label">Annual Tuition</div>
+            <div class="result-value">${{ "{:,}".format(result.annual_tuition) }}</div>
+            <div class="result-inr">≈ ₹{{ "{:,}".format((result.annual_tuition * result.inr_rate)|int) }}</div>
+          </div>
+          <div class="result-card living-card">
+            <i class="fas fa-home"></i>
+            <div class="result-label">Annual Living</div>
+            <div class="result-value">${{ "{:,}".format(result.annual_living) }}</div>
+            <div class="result-inr">≈ ₹{{ "{:,}".format((result.annual_living * result.inr_rate)|int) }}</div>
+          </div>
+          <div class="result-card insurance-card">
+            <i class="fas fa-heartbeat"></i>
+            <div class="result-label">Annual Insurance</div>
+            <div class="result-value">${{ "{:,}".format(result.health_insurance_annual) }}</div>
+            <div class="result-inr">≈ ₹{{ "{:,}".format((result.health_insurance_annual * result.inr_rate)|int) }}</div>
+          </div>
+          <div class="result-card visa-card">
+            <i class="fas fa-passport"></i>
+            <div class="result-label">Visa Fee (Once)</div>
+            <div class="result-value">${{ "{:,}".format(result.visa_fee) }}</div>
+            <div class="result-inr">≈ ₹{{ "{:,}".format((result.visa_fee * result.inr_rate)|int) }}</div>
+          </div>
+        </div>
+
+        <!-- Progress Chart -->
+        <div class="cost-chart">
+          <h3>Total for {{ result.duration }} Year(s)</h3>
+          {% set total = result.grand_total %}
+          <div class="chart-bar-item">
+            <span>Tuition ({{ result.duration }} yr)</span>
+            <div class="chart-bar-track">
+              <div class="chart-bar-fill blue" style="width: {{ (result.total_tuition / total * 100)|int }}%"></div>
+            </div>
+            <strong>${{ "{:,}".format(result.total_tuition) }}</strong>
+          </div>
+          <div class="chart-bar-item">
+            <span>Living ({{ result.duration }} yr)</span>
+            <div class="chart-bar-track">
+              <div class="chart-bar-fill gold" style="width: {{ (result.total_living / total * 100)|int }}%"></div>
+            </div>
+            <strong>${{ "{:,}".format(result.total_living) }}</strong>
+          </div>
+          <div class="chart-bar-item">
+            <span>Health Insurance</span>
+            <div class="chart-bar-track">
+              <div class="chart-bar-fill purple" style="width: {{ (result.total_health / total * 100)|int }}%"></div>
+            </div>
+            <strong>${{ "{:,}".format(result.total_health) }}</strong>
+          </div>
+        </div>
+
+        <div class="grand-total-card">
+          <div class="grand-label">Total Estimated Cost</div>
+          <div class="grand-usd">${{ "{:,}".format(result.grand_total) }}</div>
+          <div class="grand-inr">≈ ₹{{ "{:,}".format((result.grand_total * result.inr_rate)|int) }} INR</div>
+          <p class="grand-note">Work permit: {{ result.work_permit }}</p>
+        </div>
+
+        <a href="{{ url_for('contact') }}" class="btn btn-gold w-full mt-3">
+          Get Scholarship Guidance <i class="fas fa-arrow-right"></i>
+        </a>
+
+        {% else %}
+        <div class="calc-placeholder">
+          <div class="placeholder-icon">💰</div>
+          <h3>Your Cost Estimate Will Appear Here</h3>
+          <p>Fill in your details and click "Calculate My Budget" to see a detailed breakdown.</p>
+          <div class="sample-estimates">
+            <h4>Sample Annual Estimates:</h4>
+            <div class="sample-row"><span>🇩🇪 Germany (Engineering)</span><strong>$15,000–18,000</strong></div>
+            <div class="sample-row"><span>🇨🇦 Canada (MBA)</span><strong>$45,000–55,000</strong></div>
+            <div class="sample-row"><span>🇬🇧 UK (Law)</span><strong>$40,000–50,000</strong></div>
+            <div class="sample-row"><span>🇺🇸 USA (CS)</span><strong>$55,000–70,000</strong></div>
+            <div class="sample-row"><span>🇦🇺 Australia (Nursing)</span><strong>$45,000–55,000</strong></div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const INR_RATE = 83.5;
+function updateLiveCalc() {
+  const tuition = parseInt(document.getElementById('tuitionSlider').value);
+  const living = parseInt(document.getElementById('livingSlider').value);
+  const duration = parseInt(document.getElementById('durationSlider').value);
+  document.getElementById('tuitionVal').textContent = tuition.toLocaleString();
+  document.getElementById('livingVal').textContent = living.toLocaleString();
+  document.getElementById('durationVal').textContent = duration;
+  const totalT = tuition * duration;
+  const totalL = living * duration;
+  const grand = totalT + totalL;
+  document.getElementById('totalTuition').textContent = '$' + totalT.toLocaleString();
+  document.getElementById('totalLiving').textContent = '$' + totalL.toLocaleString();
+  document.getElementById('grandTotal').textContent = '$' + grand.toLocaleString();
+  document.getElementById('inrTotal').textContent = '₹' + (grand * INR_RATE).toLocaleString('en-IN');
+}
+['tuitionSlider','livingSlider','durationSlider'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateLiveCalc);
+});
+updateLiveCalc();
+</script>
+{% endblock %}

@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block title %}AI University Advisor – Sudoora{% endblock %}
+{% block content %}
+
+<div class="page-hero ai-hero">
+  <div class="container">
+    <div class="ai-hero-badge"><i class="fas fa-robot"></i> Powered by AI</div>
+    <h1>Your Personalized University <em>Recommendations</em></h1>
+    <p>Tell us about yourself and we'll match you with the best universities for your profile, goals, and budget.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="recommend-layout">
+
+      <!-- Form -->
+      <div class="recommend-form-panel">
+        <h2>Your Profile</h2>
+        <form method="POST" id="recommendForm">
+          <div class="form-group">
+            <label><i class="fas fa-dollar-sign"></i> Annual Budget (USD)</label>
+            <input type="number" name="budget" class="form-control" placeholder="e.g. 40000"
+                   value="{{ form_data.get('budget','') }}" required min="5000" max="200000">
+            <small>Include tuition + living costs</small>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-chart-line"></i> Academic Score (%)</label>
+            <input type="number" name="academic_score" class="form-control" placeholder="e.g. 78"
+                   value="{{ form_data.get('academic_score','') }}" required min="40" max="100" step="0.1">
+            <small>Percentage or CGPA (out of 100)</small>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-globe"></i> Preferred Country</label>
+            <select name="preferred_country" class="form-control">
+              <option value="Any">No Preference (Any)</option>
+              {% for c in dest_list %}
+              <option value="{{ c }}" {% if form_data.get('preferred_country')==c %}selected{% endif %}>{{ c }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-book"></i> Preferred Course</label>
+            <select name="preferred_course" class="form-control">
+              {% for c in courses %}
+              <option value="{{ c }}" {% if form_data.get('preferred_course')==c %}selected{% endif %}>
+                {{ c if c else 'Select Course (Optional)' }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-language"></i> IELTS Score (Optional)</label>
+            <input type="number" name="ielts_score" class="form-control" placeholder="e.g. 7.0"
+                   value="{{ form_data.get('ielts_score','') }}" min="3.0" max="9.0" step="0.5">
+          </div>
+          <button type="submit" class="btn btn-gold btn-lg w-full">
+            <i class="fas fa-magic"></i> Get My Recommendations
+          </button>
+        </form>
+
+        <div class="recommend-note">
+          <i class="fas fa-info-circle"></i>
+          Our AI engine considers 10+ factors including budget, academics, acceptance rates, and post-study work rights.
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="recommend-results-panel">
+        {% if submitted %}
+          {% if recommendations %}
+          <div class="results-header">
+            <h2>🎯 Your Top Matches</h2>
+            <p>Based on your profile, here are the best universities for you:</p>
+          </div>
+          <div class="rec-cards">
+            {% for rec in recommendations %}
+            <div class="rec-card">
+              <div class="rec-match-bar">
+                <div class="rec-match-fill" style="width: {{ rec.pct }}%;"></div>
+              </div>
+              <div class="rec-match-pct">{{ rec.pct }}% Match</div>
+
+              <div class="rec-main">
+                <div class="rec-rank">#{{ rec.u.ranking }}</div>
+                <div class="rec-info">
+                  <h3>{{ rec.u.name }}</h3>
+                  <p class="rec-location">
+                    {{ {'USA':'🇺🇸','UK':'🇬🇧','Canada':'🇨🇦','Australia':'🇦🇺','Germany':'🇩🇪','New Zealand':'🇳🇿','Ireland':'🇮🇪','Singapore':'🇸🇬'}.get(rec.u.country,'🌍') }}
+                    {{ rec.u.city }}, {{ rec.u.country }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="rec-meta-row">
+                <span><i class="fas fa-dollar-sign"></i>
+                  {% if rec.u.tuition_min == 0 %}~Free{% else %}${{ "{:,}".format(rec.u.tuition_min) }}{% endif %}
+                  – ${{ "{:,}".format(rec.u.tuition_max) }}/yr
+                </span>
+                <span><i class="fas fa-check-circle"></i> {{ rec.u.acceptance_rate }}% Accept</span>
+                <span><i class="fas fa-language"></i> IELTS {{ rec.u.ielts_min }}+</span>
+              </div>
+
+              <div class="rec-reasons">
+                <strong>Why this match:</strong>
+                <ul>
+                  {% for reason in rec.reasons %}
+                  <li><i class="fas fa-check"></i> {{ reason }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+
+              <div class="rec-total-cost">
+                <span>Estimated Annual Cost:</span>
+                <strong>${{ "{:,}".format(rec.cost) }}</strong>
+              </div>
+
+              <div class="rec-actions">
+                <a href="{{ url_for('destination_detail', country_name=rec.u.country) }}" class="btn btn-outline btn-sm">Country Info</a>
+                <a href="{{ url_for('contact') }}" class="btn btn-primary btn-sm">Apply Now</a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="no-results">
+            <div class="no-results-icon">🤔</div>
+            <h3>No exact matches found</h3>
+            <p>Try increasing your budget or adjusting your preferences. Our counselors can help with scholarship options!</p>
+            <a href="{{ url_for('contact') }}" class="btn btn-gold">Talk to a Counselor</a>
+          </div>
+          {% endif %}
+        {% else %}
+        <div class="recommend-intro">
+          <div class="intro-graphic">
+            <div class="ai-animation">
+              <div class="ai-node">🎓</div>
+              <div class="ai-node">💰</div>
+              <div class="ai-node">🌍</div>
+              <div class="ai-center">🤖</div>
+              <div class="ai-node">📊</div>
+              <div class="ai-node">🎯</div>
+            </div>
+          </div>
+          <h3>How Our AI Works</h3>
+          <ul class="how-it-works">
+            <li><i class="fas fa-check-circle"></i> Analyzes 1000+ university profiles</li>
+            <li><i class="fas fa-check-circle"></i> Matches based on your budget + academic score</li>
+            <li><i class="fas fa-check-circle"></i> Considers acceptance rates & IELTS requirements</li>
+            <li><i class="fas fa-check-circle"></i> Factors in post-study work rights & PR pathways</li>
+            <li><i class="fas fa-check-circle"></i> Ranks by overall compatibility percentage</li>
+          </ul>
+          <p class="intro-cta">Fill in your profile on the left to get started!</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

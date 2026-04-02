@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Blog & Updates – Sudoora{% endblock %}
+{% block content %}
+
+<div class="page-hero">
+  <div class="container">
+    <h1>Visa Updates & Education <em>Insights</em></h1>
+    <p>Stay current with the latest study abroad news, visa policy changes, and scholarship opportunities.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+
+    <!-- Category Filter -->
+    <div class="blog-filters">
+      <a href="{{ url_for('blog') }}" class="filter-chip {% if not category %}active{% endif %}">All</a>
+      {% for cat in ['Visa', 'Scholarships', 'Test Prep', 'Policy', 'Immigration', 'Destination'] %}
+      <a href="{{ url_for('blog', category=cat) }}" class="filter-chip {% if category == cat %}active{% endif %}">{{ cat }}</a>
+      {% endfor %}
+    </div>
+
+    <!-- DB Blog Posts (Curated) -->
+    {% if db_posts %}
+    <h2 class="blog-section-title">📌 Expert Articles</h2>
+    <div class="blog-grid">
+      {% for post in db_posts %}
+      <article class="blog-card">
+        <div class="blog-card-meta">
+          <span class="blog-cat-badge cat-{{ post.category|lower|replace(' ','-') }}">{{ post.category }}</span>
+          {% if post.country %}<span class="blog-country-badge">{{ post.country }}</span>{% endif %}
+        </div>
+        <h3><a href="{{ url_for('blog_post', post_id=post.id) }}">{{ post.title }}</a></h3>
+        <p>{{ post.excerpt }}</p>
+        <div class="blog-card-footer">
+          <span class="blog-date"><i class="far fa-calendar-alt"></i> {{ post.created_at[:10] }}</span>
+          <a href="{{ url_for('blog_post', post_id=post.id) }}" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Live News from NewsAPI -->
+    {% if api_news %}
+    <h2 class="blog-section-title">🌐 Latest News & Updates</h2>
+    <div class="blog-grid">
+      {% for article in api_news %}
+      <article class="blog-card news-card-live">
+        <div class="blog-card-meta">
+          <span class="blog-cat-badge">{{ article.category if article.category else 'News' }}</span>
+          <span class="live-badge"><i class="fas fa-circle"></i> Live</span>
+        </div>
+        <h3>
+          <a href="{{ article.url }}" target="_blank" rel="noopener">{{ article.title[:90] }}{% if article.title|length > 90 %}...{% endif %}</a>
+        </h3>
+        <p>{{ article.description[:140] if article.description else '' }}{% if article.description and article.description|length > 140 %}...{% endif %}</p>
+        <div class="blog-card-footer">
+          <span class="blog-date">
+            <i class="far fa-calendar-alt"></i>
+            {{ format_date(article.publishedAt) if article.publishedAt else '' }}
+          </span>
+          <a href="{{ article.url }}" target="_blank" rel="noopener" class="read-more">
+            Full Article <i class="fas fa-external-link-alt"></i>
+          </a>
+        </div>
+        {% if article.source %}
+        <div class="news-source">Source: {{ article.source.name if article.source is mapping else article.source }}</div>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if not db_posts and not api_news %}
+    <div class="empty-state">
+      <i class="fas fa-newspaper fa-3x"></i>
+      <h3>No posts found</h3>
+      <p><a href="{{ url_for('blog') }}">Clear filters</a> to see all articles.</p>
+    </div>
+    {% endif %}
+
+    <!-- Newsletter Signup -->
+    <div class="newsletter-card">
+      <div class="newsletter-content">
+        <h3>📬 Stay Updated</h3>
+        <p>Get weekly visa updates, scholarship alerts, and study abroad tips delivered to your inbox.</p>
+      </div>
+      <form class="newsletter-form" id="newsletterForm" onsubmit="subscribeNewsletter(event)">
+        <input type="email" id="nlEmail" placeholder="your@email.com" required>
+        <button type="submit" class="btn btn-gold">Subscribe Free</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function subscribeNewsletter(e) {
+  e.preventDefault();
+  const email = document.getElementById('nlEmail').value;
+  alert('✅ Thank you! You\'ll receive study abroad updates at ' + email);
+  document.getElementById('newsletterForm').reset();
+}
+</script>
+{% endblock %}

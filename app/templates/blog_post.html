@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} – Sudoora{% endblock %}
+{% block content %}
+
+<div class="page-hero">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="{{ url_for('blog') }}">Blog</a> / <span>{{ post.category }}</span>
+    </div>
+    <div class="post-hero-meta">
+      <span class="blog-cat-badge">{{ post.category }}</span>
+      {% if post.country %}<span class="blog-country-badge">{{ post.country }}</span>{% endif %}
+    </div>
+    <h1>{{ post.title }}</h1>
+    <p class="post-date"><i class="far fa-calendar-alt"></i> {{ post.created_at[:10] }}</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="post-layout">
+      <article class="post-content">
+        <div class="post-excerpt">{{ post.excerpt }}</div>
+        <div class="post-body">
+          {% for para in post.content.split('\n') %}
+            {% if para.strip() %}<p>{{ para.strip() }}</p>{% endif %}
+          {% endfor %}
+        </div>
+
+        <div class="post-cta-box">
+          <h3>Need Expert Guidance?</h3>
+          <p>Our counselors can help you navigate visa applications, university selection, and scholarships for {{ post.country if post.country else 'your dream destination' }}.</p>
+          <a href="{{ url_for('contact') }}" class="btn btn-gold">Book Free Counselling</a>
+        </div>
+      </article>
+
+      <aside class="post-sidebar">
+        {% if related %}
+        <div class="sidebar-card">
+          <h4>Related Articles</h4>
+          {% for r in related %}
+          <div class="related-post">
+            <a href="{{ url_for('blog_post', post_id=r.id) }}">{{ r.title[:60] }}...</a>
+            <small>{{ r.created_at[:10] }}</small>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="sidebar-card cta-sidebar">
+          <h3>Free Counselling</h3>
+          <p>Get personalized advice from our experts. No obligation.</p>
+          <a href="{{ url_for('contact') }}" class="btn btn-gold w-full">Book Now</a>
+        </div>
+
+        <div class="sidebar-card">
+          <h4>Quick Tools</h4>
+          <ul class="sidebar-links">
+            <li><a href="{{ url_for('cost_calculator') }}"><i class="fas fa-calculator"></i> Cost Calculator</a></li>
+            <li><a href="{{ url_for('recommend') }}"><i class="fas fa-robot"></i> AI Advisor</a></li>
+            <li><a href="{{ url_for('intakes') }}"><i class="fas fa-calendar-alt"></i> Intake Tracker</a></li>
+            <li><a href="{{ url_for('universities') }}"><i class="fas fa-university"></i> University Search</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}

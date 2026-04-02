@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Universities – Sudoora Admin{% endblock %}
+{% block content %}
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-brand"><div class="brand-icon">S</div><span>Admin Panel</span></div>
+    <nav class="admin-nav">
+      <a href="{{ url_for('admin_dashboard') }}" class="admin-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      <a href="{{ url_for('admin_leads') }}" class="admin-nav-item"><i class="fas fa-users"></i> Leads</a>
+      <a href="{{ url_for('admin_universities') }}" class="admin-nav-item active"><i class="fas fa-university"></i> Universities</a>
+      <a href="{{ url_for('index') }}" class="admin-nav-item"><i class="fas fa-globe"></i> View Website</a>
+      <a href="{{ url_for('admin_logout') }}" class="admin-nav-item logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </nav>
+  </aside>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1>Universities <span class="lead-count">{{ universities|length }}</span></h1>
+    </div>
+    <div class="admin-card">
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Rank</th><th>University</th><th>Country</th><th>City</th>
+              <th>Tuition (Min–Max)</th><th>Accept %</th><th>IELTS</th>
+              <th>Fall</th><th>Spring</th><th>Courses</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for uni in universities %}
+            <tr>
+              <td>#{{ uni.ranking }}</td>
+              <td><strong>{{ uni.name }}</strong></td>
+              <td>{{ uni.country }}</td>
+              <td>{{ uni.city }}</td>
+              <td>${{ "{:,}".format(uni.tuition_min) }} – ${{ "{:,}".format(uni.tuition_max) }}</td>
+              <td>{{ uni.acceptance_rate }}%</td>
+              <td>{{ uni.ielts_min }}</td>
+              <td>{% if uni.intake_fall %}✅{% else %}—{% endif %}</td>
+              <td>{% if uni.intake_spring %}✅{% else %}—{% endif %}</td>
+              <td class="msg-cell">{{ uni.popular_courses[:40] }}...</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

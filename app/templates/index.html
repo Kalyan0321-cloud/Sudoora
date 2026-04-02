@@ -1,0 +1,394 @@
+{% extends "base.html" %}
+{% block title %}Sudoora – Study Abroad Consultancy for Indian Students{% endblock %}
+
+{% block content %}
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="hero">
+  <div class="hero-bg-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+  <div class="container hero-content">
+    <div class="hero-text" data-aos="fade-right">
+      <div class="hero-badge"><i class="fas fa-star"></i> India's Most Trusted Study Abroad Partner</div>
+      <h1>Transform Your Future with <em>Sudoora</em></h1>
+      <p>Expert counselling for 50+ countries, 1000+ universities. Join 15,000+ Indian students who achieved their dream of studying abroad.</p>
+      <div class="hero-cta-group">
+        <a href="{{ url_for('contact') }}" class="btn btn-gold btn-lg">
+          <i class="fas fa-calendar-check"></i> Book Free Counselling
+        </a>
+        <a href="{{ url_for('recommend') }}" class="btn btn-outline btn-lg">
+          <i class="fas fa-robot"></i> Try AI Advisor
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num" data-count="15000">0</span>+<div>Students Guided</div></div>
+        <div class="stat"><span class="stat-num" data-count="1000">0</span>+<div>Universities</div></div>
+        <div class="stat"><span class="stat-num" data-count="50">0</span>+<div>Destinations</div></div>
+        <div class="stat"><span class="stat-num" data-count="14">0</span><div>Years Experience</div></div>
+      </div>
+    </div>
+    <div class="hero-visual" data-aos="fade-left">
+      <div class="hero-card-stack">
+        <div class="hero-card card-1">
+          <i class="fas fa-university"></i>
+          <div>
+            <strong>MIT</strong>
+            <small>Accepted 2024 🎉</small>
+          </div>
+        </div>
+        <div class="hero-card card-2">
+          <i class="fas fa-plane"></i>
+          <div>
+            <strong>Visa Approved</strong>
+            <small>Canada Study Permit</small>
+          </div>
+        </div>
+        <div class="hero-card card-3">
+          <i class="fas fa-award"></i>
+          <div>
+            <strong>£18,000 Scholarship</strong>
+            <small>Chevening Award 🏆</small>
+          </div>
+        </div>
+        <div class="globe-visual">🌍</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-indicator">
+    <span>Scroll to explore</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══ QUICK LEAD CAPTURE BAR ═══ -->
+<section class="lead-bar">
+  <div class="container">
+    <div class="lead-bar-inner">
+      <div class="lead-bar-text">
+        <h3>Start Your Journey Today</h3>
+        <p>Get a free 30-minute counselling session</p>
+      </div>
+      <form class="lead-bar-form" id="quickLeadForm">
+        <input type="text" id="qlName" placeholder="Your Name" required>
+        <input type="tel" id="qlPhone" placeholder="Phone Number" required>
+        <select id="qlCountry">
+          <option value="">Select Country</option>
+          {% for c in countries_list %}
+          <option>{{ c }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-gold">
+          <i class="fas fa-paper-plane"></i> Get Started
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DESTINATIONS ═══ -->
+<section class="section" id="destinations">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Where to Study</span>
+      <h2>Top Study <em>Destinations</em></h2>
+      <p>Explore our curated list of countries preferred by Indian students, with real cost data and visa insights.</p>
+    </div>
+
+    <div class="destinations-grid">
+      {% for name, data in destinations.items() %}
+      <a href="{{ url_for('destination_detail', country_name=name) }}" class="dest-card" data-country="{{ name }}">
+        <div class="dest-flag">{{ data.flag }}</div>
+        <div class="dest-body">
+          <h3>{{ name }}</h3>
+          <div class="dest-meta">
+            <span><i class="fas fa-university"></i> {{ data.universities }}+ Unis</span>
+            <span><i class="fas fa-dollar-sign"></i> ${{ "{:,}".format(data.avg_tuition) }}/yr</span>
+          </div>
+          <div class="dest-tags">
+            {% for course in data.popular_courses[:3] %}
+            <span class="tag">{{ course }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="dest-footer">
+          <span class="dest-visa">{{ data.visa_type }}</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+        <div class="dest-stripe" style="background: {{ data.color }};"></div>
+      </a>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="{{ url_for('destinations') }}" class="btn btn-outline">View All Destinations <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="section section-alt process-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Simple Process</span>
+      <h2>Your Study Abroad <em>Journey</em></h2>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-icon"><i class="fas fa-comments"></i></div>
+        <div class="step-num">01</div>
+        <h3>Free Counselling</h3>
+        <p>Meet our expert counselors for a personalized assessment of your profile and goals.</p>
+      </div>
+      <div class="process-arrow"><i class="fas fa-chevron-right"></i></div>
+      <div class="process-step">
+        <div class="step-icon"><i class="fas fa-search"></i></div>
+        <div class="step-num">02</div>
+        <h3>University Selection</h3>
+        <p>Get a shortlist of universities matching your budget, academics, and career goals.</p>
+      </div>
+      <div class="process-arrow"><i class="fas fa-chevron-right"></i></div>
+      <div class="process-step">
+        <div class="step-icon"><i class="fas fa-file-alt"></i></div>
+        <div class="step-num">03</div>
+        <h3>Application Support</h3>
+        <p>We handle your SOP, LOR, and complete application paperwork from start to finish.</p>
+      </div>
+      <div class="process-arrow"><i class="fas fa-chevron-right"></i></div>
+      <div class="process-step">
+        <div class="step-icon"><i class="fas fa-passport"></i></div>
+        <div class="step-num">04</div>
+        <h3>Visa & Pre-Departure</h3>
+        <p>Expert visa guidance, scholarship search, accommodation help, and pre-departure briefing.</p>
+      </div>
+      <div class="process-arrow"><i class="fas fa-chevron-right"></i></div>
+      <div class="process-step">
+        <div class="step-icon"><i class="fas fa-graduation-cap"></i></div>
+        <div class="step-num">05</div>
+        <h3>Dream Realized!</h3>
+        <p>Land at your dream university with full confidence. We're with you every step of the way.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURED UNIVERSITIES ═══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Partner Universities</span>
+      <h2>Top <em>Universities</em> We Collaborate With</h2>
+    </div>
+    <div class="unis-grid">
+      {% for uni in featured_unis %}
+      <div class="uni-card">
+        <div class="uni-rank">#{{ uni.ranking }}</div>
+        <div class="uni-country-badge">{{ {'USA':'🇺🇸','UK':'🇬🇧','Canada':'🇨🇦','Australia':'🇦🇺','Germany':'🇩🇪'}[uni.country] if uni.country in ['USA','UK','Canada','Australia','Germany'] else '🌍' }}</div>
+        <h3>{{ uni.name }}</h3>
+        <p class="uni-location"><i class="fas fa-map-marker-alt"></i> {{ uni.city }}, {{ uni.country }}</p>
+        <div class="uni-meta-row">
+          <span><i class="fas fa-dollar-sign"></i> ${{ "{:,}".format(uni.tuition_min) }}–{{ "{:,}".format(uni.tuition_max) }}/yr</span>
+          <span><i class="fas fa-percentage"></i> {{ uni.acceptance_rate }}% Accept</span>
+        </div>
+        <div class="uni-courses">{{ uni.popular_courses[:50] }}...</div>
+        <div class="uni-intakes">
+          {% if uni.intake_fall %}<span class="intake-badge fall">Fall</span>{% endif %}
+          {% if uni.intake_spring %}<span class="intake-badge spring">Spring</span>{% endif %}
+          {% if uni.intake_summer %}<span class="intake-badge summer">Summer</span>{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+      <a href="{{ url_for('universities') }}" class="btn btn-primary">Explore All Universities <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ AI RECOMMENDATION CTA ═══ -->
+<section class="section cta-section">
+  <div class="container">
+    <div class="cta-card">
+      <div class="cta-left">
+        <div class="cta-icon">🤖</div>
+        <div>
+          <h2>Get AI-Powered University Recommendations</h2>
+          <p>Answer 5 simple questions and our AI engine will match you with the best universities based on your budget, academics, and career goals.</p>
+          <ul class="cta-features">
+            <li><i class="fas fa-check-circle"></i> Personalized to your profile</li>
+            <li><i class="fas fa-check-circle"></i> Based on real acceptance data</li>
+            <li><i class="fas fa-check-circle"></i> Includes scholarship suggestions</li>
+          </ul>
+          <a href="{{ url_for('recommend') }}" class="btn btn-gold btn-lg">
+            <i class="fas fa-magic"></i> Try AI Advisor – Free
+          </a>
+        </div>
+      </div>
+      <div class="cta-visual">
+        <div class="ai-demo">
+          <div class="ai-input">Budget: ₹40L/year</div>
+          <div class="ai-input">Score: 85%</div>
+          <div class="ai-input">Country: Canada</div>
+          <div class="ai-arrow">↓ AI Processing...</div>
+          <div class="ai-output">
+            <div class="ai-match">
+              <strong>University of Toronto</strong>
+              <span class="match-pct">92% Match</span>
+            </div>
+            <div class="ai-match">
+              <strong>McGill University</strong>
+              <span class="match-pct">88% Match</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COST CALCULATOR TEASER ═══ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="two-col">
+      <div class="col-text">
+        <span class="section-tag">Budget Planning</span>
+        <h2>How Much Will It <em>Really</em> Cost?</h2>
+        <p>Use our interactive cost calculator to get a realistic estimate of tuition, living expenses, visa fees, and healthcare costs for any destination.</p>
+        <div class="cost-quick-stats">
+          <div class="cost-stat">
+            <div class="cost-country">🇩🇪 Germany</div>
+            <div class="cost-amount">₹10–15L/yr</div>
+            <small>Nearly free tuition!</small>
+          </div>
+          <div class="cost-stat">
+            <div class="cost-country">🇨🇦 Canada</div>
+            <div class="cost-amount">₹30–40L/yr</div>
+            <small>Incl. tuition + living</small>
+          </div>
+          <div class="cost-stat">
+            <div class="cost-country">🇺🇸 USA</div>
+            <div class="cost-amount">₹45–60L/yr</div>
+            <small>Top universities</small>
+          </div>
+        </div>
+        <a href="{{ url_for('cost_calculator') }}" class="btn btn-primary">
+          <i class="fas fa-calculator"></i> Open Full Calculator
+        </a>
+      </div>
+      <div class="col-visual">
+        <div class="calc-preview">
+          <div class="calc-bar">
+            <span>Tuition</span>
+            <div class="bar-track"><div class="bar-fill" style="width:60%;background:#1E3A8A;"></div></div>
+            <span>$28,000</span>
+          </div>
+          <div class="calc-bar">
+            <span>Living</span>
+            <div class="bar-track"><div class="bar-fill" style="width:40%;background:#F59E0B;"></div></div>
+            <span>$14,000</span>
+          </div>
+          <div class="calc-bar">
+            <span>Visa</span>
+            <div class="bar-track"><div class="bar-fill" style="width:5%;background:#10B981;"></div></div>
+            <span>$150</span>
+          </div>
+          <div class="calc-bar">
+            <span>Insurance</span>
+            <div class="bar-track"><div class="bar-fill" style="width:3%;background:#8B5CF6;"></div></div>
+            <span>$800</span>
+          </div>
+          <div class="calc-total">Total: <strong>$42,950/year</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LATEST NEWS ═══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Stay Updated</span>
+      <h2>Latest Visa & Education <em>Updates</em></h2>
+    </div>
+    <div class="news-grid">
+      {% for article in news %}
+      <article class="news-card">
+        <div class="news-category">{{ article.category if article.category else 'News' }}</div>
+        <div class="news-country">{{ article.country if article.country else '' }}</div>
+        <h3>{{ article.title[:80] }}{% if article.title|length > 80 %}...{% endif %}</h3>
+        <p>{{ article.description[:120] if article.description else '' }}...</p>
+        <div class="news-footer">
+          <span class="news-date"><i class="far fa-calendar-alt"></i> {{ format_date(article.publishedAt) if article.publishedAt else '' }}</span>
+          <a href="{{ article.url }}" target="_blank" rel="noopener" class="read-more">Read More <i class="fas fa-external-link-alt"></i></a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+      <a href="{{ url_for('blog') }}" class="btn btn-outline">View All Updates <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Success Stories</span>
+      <h2>What Our Students <em>Say</em></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>"GlobEd made my dream of studying in Canada a reality. From university selection to visa approval, their team was with me at every step. Now pursuing my Master's at UBC!"</p>
+        <div class="testi-author">
+          <div class="testi-avatar">RK</div>
+          <div><strong>Rahul Kumar</strong><small>M.Eng at UBC, Canada</small></div>
+        </div>
+      </div>
+      <div class="testimonial-card featured-testi">
+        <div class="testi-stars">★★★★★</div>
+        <p>"I was confused between UK and Germany. GlobEd's AI advisor helped me realize Germany was perfect for my budget and goals. Got a full scholarship at TU Munich!"</p>
+        <div class="testi-author">
+          <div class="testi-avatar">PS</div>
+          <div><strong>Priya Sharma</strong><small>M.Sc at TU Munich, Germany</small></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>"The cost calculator was eye-opening. I never knew studying in Ireland could be so affordable! Got into Trinity College Dublin with partial scholarship guidance."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">AS</div>
+          <div><strong>Aditya Singh</strong><small>LLB at Trinity College, Ireland</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FINAL CTA ═══ -->
+<section class="section final-cta-section">
+  <div class="container">
+    <div class="final-cta-inner">
+      <h2>Ready to Begin Your Global Education Journey?</h2>
+      <p>Book a free 30-minute counselling session with our experts today. No obligation, just expert advice.</p>
+      <div class="final-cta-btns">
+        <a href="{{ url_for('contact') }}" class="btn btn-gold btn-xl">
+          <i class="fas fa-calendar-check"></i> Book Free Counselling
+        </a>
+        <a href="https://wa.me/919876543210" class="btn btn-whatsapp btn-xl" target="_blank">
+          <i class="fab fa-whatsapp"></i> WhatsApp Us
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+{% endblock %}

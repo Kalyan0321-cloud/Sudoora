@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login – Sudoora</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body class="admin-login-body">
+  <div class="admin-login-card">
+    <div class="admin-login-brand">
+      <div class="brand-icon">S</div>
+      <div class="brand-text">
+        <span class="brand-name">Sudoora</span>
+        <span class="brand-sub">Admin Panel</span>
+      </div>
+    </div>
+    <h2>Sign In</h2>
+    {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+    <form method="POST">
+      
+      <div class="form-group">
+        <label><i class="fas fa-user"></i> Username</label>
+        {{ form.username(class="form-control", placeholder="admin") }}
+      </div>
+      <div class="form-group">
+        <label><i class="fas fa-lock"></i> Password</label>
+        {{ form.password(class="form-control", placeholder="••••••••", type="password") }}
+      </div>
+      <button type="submit" class="btn btn-primary w-full">Sign In <i class="fas fa-arrow-right"></i></button>
+    </form>
+    <p class="admin-back"><a href="{{ url_for('index') }}">← Back to Website</a></p>
+    <p class="admin-hint">Default: admin / admin123</p>
+  </div>
+</body>
+</html>

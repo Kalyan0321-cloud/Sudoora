@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% block title %}Study in {{ country_name }} – Sudoora{% endblock %}
+{% block content %}
+
+<div class="page-hero" style="background: linear-gradient(135deg, {{ country.color }}22 0%, #1E3A8A11 100%);">
+  <div class="container">
+    <div class="dest-hero-inner">
+      <div class="dest-hero-flag">{{ country.flag }}</div>
+      <div>
+        <h1>Study in <em>{{ country_name }}</em></h1>
+        <p>{{ country.universities }}+ universities | {{ country.language }} | {{ country.visa_type }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="dest-detail-layout">
+
+      <!-- Main Content -->
+      <div class="dest-main">
+
+        <!-- Quick Stats -->
+        <div class="quick-stats-row">
+          <div class="quick-stat">
+            <i class="fas fa-graduation-cap"></i>
+            <div><strong>${{ "{:,}".format(country.avg_tuition) }}/yr</strong><small>Avg. Tuition</small></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fas fa-home"></i>
+            <div><strong>${{ "{:,}".format(country.living_cost) }}/yr</strong><small>Living Cost</small></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fas fa-passport"></i>
+            <div><strong>${{ country.visa_fee }}</strong><small>Visa Fee</small></div>
+          </div>
+          <div class="quick-stat">
+            <i class="fas fa-briefcase"></i>
+            <div><strong>{{ country.work_permit }}</strong><small>Work Rights</small></div>
+          </div>
+        </div>
+
+        <!-- Visa Info -->
+        <div class="info-card">
+          <h3><i class="fas fa-passport"></i> Visa Information</h3>
+          <div class="info-grid">
+            <div><strong>Visa Type:</strong> {{ country.visa_type }}</div>
+            <div><strong>Fee:</strong> ${{ country.visa_fee }} USD</div>
+            <div><strong>Work Permit:</strong> {{ country.work_permit }}</div>
+            <div><strong>PR Pathway:</strong> {{ country.pr_pathway }}</div>
+          </div>
+        </div>
+
+        <!-- Cost Breakdown -->
+        <div class="info-card">
+          <h3><i class="fas fa-calculator"></i> Annual Cost Breakdown (in INR)</h3>
+          <div class="cost-breakdown">
+            <div class="cost-row">
+              <span>Average Tuition</span>
+              <div class="cost-bar-wrap">
+                <div class="cost-bar" style="width:70%;background:{{ country.color }};"></div>
+              </div>
+              <strong>₹{{ "{:,}".format((country.avg_tuition * inr_rate)|int) }}</strong>
+            </div>
+            <div class="cost-row">
+              <span>Living Expenses</span>
+              <div class="cost-bar-wrap">
+                <div class="cost-bar" style="width:45%;background:#F59E0B;"></div>
+              </div>
+              <strong>₹{{ "{:,}".format((country.living_cost * inr_rate)|int) }}</strong>
+            </div>
+            <div class="cost-row">
+              <span>Visa Fees</span>
+              <div class="cost-bar-wrap">
+                <div class="cost-bar" style="width:5%;background:#10B981;"></div>
+              </div>
+              <strong>₹{{ "{:,}".format((country.visa_fee * inr_rate)|int) }}</strong>
+            </div>
+          </div>
+          <p class="cost-note">* Based on approximate exchange rate: 1 {{ country.currency }} ≈ ₹{{ inr_rate }}</p>
+        </div>
+
+        <!-- Universities -->
+        {% if universities %}
+        <div class="info-card">
+          <h3><i class="fas fa-university"></i> Top Universities in {{ country_name }}</h3>
+          <div class="uni-list">
+            {% for uni in universities %}
+            <div class="uni-list-item">
+              <div class="uni-rank-badge">#{{ uni.ranking }}</div>
+              <div class="uni-list-info">
+                <strong>{{ uni.name }}</strong>
+                <span>{{ uni.city }} | ${{ "{:,}".format(uni.tuition_min) }}–${{ "{:,}".format(uni.tuition_max) }}/yr | Accept: {{ uni.acceptance_rate }}%</span>
+                <div class="uni-courses-mini">{{ uni.popular_courses }}</div>
+              </div>
+              <div class="uni-intakes-mini">
+                {% if uni.intake_fall %}<span class="intake-badge fall">Fall</span>{% endif %}
+                {% if uni.intake_spring %}<span class="intake-badge spring">Spring</span>{% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Top Cities -->
+        <div class="info-card">
+          <h3><i class="fas fa-city"></i> Top Student Cities</h3>
+          <div class="cities-grid">
+            {% for city in country.top_cities %}
+            <div class="city-chip"><i class="fas fa-map-marker-alt"></i> {{ city }}</div>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="dest-sidebar">
+        <div class="sidebar-card cta-sidebar">
+          <h3>Start Your {{ country_name }} Journey</h3>
+          <p>Get free expert guidance for universities, visa, and scholarships in {{ country_name }}.</p>
+          <a href="{{ url_for('contact') }}" class="btn btn-gold w-full">Book Free Counselling</a>
+          <a href="{{ url_for('recommend') }}" class="btn btn-outline w-full mt-2">Try AI Advisor</a>
+        </div>
+
+        <div class="sidebar-card">
+          <h4>Intake Months</h4>
+          <div class="intake-list">
+            {% for month in country.intake_months %}
+            <div class="intake-item"><i class="far fa-calendar-alt"></i> {{ month }}</div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h4>Popular Courses</h4>
+          <div class="tag-group">
+            {% for course in country.popular_courses %}
+            <a href="{{ url_for('universities', country=country_name) }}" class="tag">{{ course }}</a>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h4>Quick Calculator</h4>
+          <a href="{{ url_for('cost_calculator') }}" class="btn btn-primary w-full">
+            <i class="fas fa-calculator"></i> Calculate Full Cost
+          </a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}

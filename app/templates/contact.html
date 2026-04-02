@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block title %}Contact Us – Sudoora{% endblock %}
+{% block content %}
+
+<div class="page-hero">
+  <div class="container">
+    <h1>Book Your Free <em>Counselling Session</em></h1>
+    <p>Speak with our expert counselors and get personalized guidance for your study abroad journey.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="contact-layout">
+
+      <!-- Form -->
+      <div class="contact-form-panel">
+        {% if success %}
+        <div class="success-message">
+          <div class="success-icon">🎉</div>
+          <h2>Thank You! We'll Be in Touch Soon.</h2>
+          <p>One of our expert counselors will contact you within 24 hours. Meanwhile, explore our resources:</p>
+          <div class="success-links">
+            <a href="{{ url_for('recommend') }}" class="btn btn-primary">Try AI Advisor</a>
+            <a href="{{ url_for('cost_calculator') }}" class="btn btn-outline">Cost Calculator</a>
+          </div>
+        </div>
+        {% else %}
+        <h2>Get Free Expert Advice</h2>
+        <form method="POST" id="contactForm">
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" name="name" class="form-control" placeholder="Rahul Kumar" value="{{ form_data.get('name','') }}" required>
+              {% if errors.get("name") %}<span class="form-error">{{ errors.name }}</span>{% endif %}
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" name="email" class="form-control" placeholder="rahul@gmail.com" value="{{ form_data.get('email','') }}" required>
+              {% if errors.get("email") %}<span class="form-error">{{ errors.email }}</span>{% endif %}
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" name="phone" class="form-control" placeholder="+91 98765 43210" value="{{ form_data.get('phone','') }}" required>
+              {% if errors.get("phone") %}<span class="form-error">{{ errors.phone }}</span>{% endif %}
+            </div>
+            <div class="form-group">
+              <label>Academic Score (%)</label>
+              <input type="number" name="academic_score" class="form-control" placeholder="e.g. 78" value="{{ form_data.get('academic_score','') }}" min="0" max="100" step="0.1">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Preferred Country</label>
+              <select name="preferred_country" class="form-control">
+              <option value="">Select Country</option>
+              {% for c in dest_list %}
+              <option value="{{ c }}" {% if form_data.get('preferred_country')==c %}selected{% endif %}>{{ c }}</option>
+              {% endfor %}
+            </select>
+            </div>
+            <div class="form-group">
+              <label>Preferred Course</label>
+              <select name="preferred_course" class="form-control">
+              {% for c in courses %}
+              <option value="{{ c }}" {% if form_data.get('preferred_course')==c %}selected{% endif %}>
+                {{ c if c else 'Select Course (Optional)' }}
+              </option>
+              {% endfor %}
+            </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Annual Budget (USD)</label>
+            <select name="budget" class="form-control">
+              <option value="">Select Budget</option>
+              <option value="Under $20K/yr">Under $20,000/year</option>
+              <option value="$20-30K/yr">$20,000 – $30,000/year</option>
+              <option value="$30-45K/yr">$30,000 – $45,000/year</option>
+              <option value="$45-60K/yr">$45,000 – $60,000/year</option>
+              <option value="Above $60K/yr">Above $60,000/year</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Message <small>(Optional)</small></label>
+            <textarea name="message" class="form-control" rows="4" placeholder="Tell us about your goals, concerns, or questions...">{{ form_data.get('message','') }}</textarea>
+          </div>
+          <button type="submit" class="btn btn-gold btn-lg w-full">
+            <i class="fas fa-paper-plane"></i> Submit & Book Free Session
+          </button>
+          <p class="form-disclaimer">✅ 100% Free. No spam. Our counselors will contact you within 24 hours.</p>
+        </form>
+        {% endif %}
+      </div>
+
+      <!-- Contact Info -->
+      <div class="contact-info-panel">
+        <div class="contact-card">
+          <h3>Our Offices</h3>
+          <div class="office-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <strong>Tirupati (HQ) </strong>
+              <p>Pillar no 55  2 nd floor beside sony service center leelamahal circle Tirupati – 517501</p>
+            </div>
+          </div>
+          <!-- <div class="office-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <strong>Mumbai</strong>
+              <p>Level 5, Bandra Kurla Complex, Mumbai – 400051</p>
+            </div>
+          </div>
+          <div class="office-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <strong>Bangalore</strong>
+              <p>12, MG Road, Bengaluru – 560001</p>
+            </div>
+          </div> -->
+        </div>
+
+        <div class="contact-card">
+          <h3>Get In Touch</h3>
+          <div class="contact-method">
+            <a href="tel:+9195058 77797"><i class="fas fa-phone-alt"></i> +91 98765 43210</a>
+          </div>
+          <div class="contact-method">
+            <a href="mailto:info@sudoora.com"><i class="fas fa-envelope"></i> info@globed.in</a>
+          </div>
+          <div class="contact-method">
+            <a href="https://wa.me/919505877797" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+          </div>
+          <p class="office-hours"><i class="fas fa-clock"></i> Monday – Saturday: 9:00 AM – 7:00 PM IST</p>
+        </div>
+
+        <div class="contact-card why-choose">
+          <h3>Why Sudoora?</h3>
+          <ul>
+            <li><i class="fas fa-check-circle"></i> 14+ Years of Experience</li>
+            <li><i class="fas fa-check-circle"></i> 15,000+ Students Guided</li>
+            <li><i class="fas fa-check-circle"></i> 95% Visa Success Rate</li>
+            <li><i class="fas fa-check-circle"></i> Partnerships with 500+ Universities</li>
+            <li><i class="fas fa-check-circle"></i> ₹50 Crore+ Scholarships Secured</li>
+            <li><i class="fas fa-check-circle"></i> Offices in 5 Indian Cities</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

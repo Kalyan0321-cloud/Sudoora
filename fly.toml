@@ -1,0 +1,38 @@
+# fly.toml — Fly.io configuration for GlobEd Study Abroad
+# After running `fly launch`, update the `app` field with your actual app name.
+app = 'globed-studyabroad'
+primary_region = 'sin'  # Singapore — closest to India/South Asia
+
+[build]
+
+[env]
+  PORT = "8080"
+  # DATABASE_URL is set via `fly secrets set` — see deployment instructions below
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+  [http_service.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
+
+# Persistent volume — keeps the SQLite database across deploys and restarts.
+# Create it once with: fly volumes create globed_data --size 1 --region sin
+[[mounts]]
+  source = "globed_data"
+  destination = "/app/instance"
+
+[[statics]]
+  guest_path = "/app/app/static"
+  url_prefix = "/static"

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Manage Leads – Sudoora Admin{% endblock %}
+{% block content %}
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-brand"><div class="brand-icon">GE</div><span>Admin Panel</span></div>
+    <nav class="admin-nav">
+      <a href="{{ url_for('admin_dashboard') }}" class="admin-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      <a href="{{ url_for('admin_leads') }}" class="admin-nav-item active"><i class="fas fa-users"></i> Leads</a>
+      <a href="{{ url_for('admin_universities') }}" class="admin-nav-item"><i class="fas fa-university"></i> Universities</a>
+      <a href="{{ url_for('index') }}" class="admin-nav-item"><i class="fas fa-globe"></i> View Website</a>
+      <a href="{{ url_for('admin_logout') }}" class="admin-nav-item logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </nav>
+  </aside>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1>Student Leads <span class="lead-count">{{ leads|length }}</span></h1>
+      <a href="{{ url_for('contact') }}" class="btn btn-gold" target="_blank">+ New Lead (Contact Form)</a>
+    </div>
+    <div class="admin-card">
+      <div class="admin-table-wrap">
+        <table class="admin-table leads-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Country</th>
+              <th>Course</th>
+              <th>Budget</th>
+              <th>Score</th>
+              <th>Message</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for lead in leads %}
+            <tr class="{% if lead.status == 'new' %}row-new{% endif %}">
+              <td>{{ lead.id }}</td>
+              <td><strong>{{ lead.name }}</strong></td>
+              <td><a href="mailto:{{ lead.email }}">{{ lead.email }}</a></td>
+              <td><a href="tel:{{ lead.phone }}">{{ lead.phone }}</a></td>
+              <td>{{ lead.preferred_country or '—' }}</td>
+              <td>{{ lead.preferred_course or '—' }}</td>
+              <td>{{ lead.budget or '—' }}</td>
+              <td>{{ lead.academic_score or '—' }}</td>
+              <td class="msg-cell">{{ (lead.message or '')[:50] }}{% if lead.message and lead.message|length > 50 %}...{% endif %}</td>
+              <td><span class="status-badge status-{{ lead.status }}">{{ lead.status.title() }}</span></td>
+              <td>{{ lead.created_at.strftime('%d %b %y') }}</td>
+              <td>
+                <form method="POST" action="{{ url_for('update_lead_status', lead_id=lead.id) }}" class="inline-form">
+                  <select name="status" onchange="this.form.submit()" class="status-select">
+                    <option value="new" {% if lead.status == 'new' %}selected{% endif %}>New</option>
+                    <option value="contacted" {% if lead.status == 'contacted' %}selected{% endif %}>Contacted</option>
+                    <option value="enrolled" {% if lead.status == 'enrolled' %}selected{% endif %}>Enrolled</option>
+                  </select>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+            {% if not leads %}
+            <tr><td colspan="12" class="text-center">No leads yet. Students will appear here when they submit the contact form.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}
