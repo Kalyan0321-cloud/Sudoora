@@ -29,7 +29,7 @@
     </div>
     <div class="topbar-right">
       <span><i class="fas fa-clock"></i> Mon–Sat: 9AM – 7PM</span>
-      <a href="{{ url_for('admin_login') }}" class="admin-link"><i class="fas fa-user-shield"></i> Admin</a>
+      <a href="{{ url_for('main.admin_login') }}" class="admin-link"><i class="fas fa-user-shield"></i> Admin</a>
     </div>
   </div>
 </div>
@@ -37,7 +37,7 @@
 <!-- ═══════════════════════ NAVBAR ═══════════════════════ -->
 <nav class="navbar" id="navbar">
   <div class="container nav-container">
-    <a href="{{ url_for('index') }}" class="nav-brand">
+    <a href="{{ url_for('main.index') }}" class="nav-brand">
       <div class="brand-icon">S</div>
       <div class="brand-text">
         <span class="brand-name">Sudoora</span>
@@ -46,24 +46,24 @@
     </a>
 
     <ul class="nav-menu" id="navMenu">
-      <li><a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}">Home</a></li>
+      <li><a href="{{ url_for('main.index') }}" class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}">Home</a></li>
       <li class="has-dropdown">
-        <a href="{{ url_for('destinations') }}" class="nav-link">Destinations <i class="fas fa-chevron-down"></i></a>
+        <a href="{{ url_for('main.destinations') }}" class="nav-link">Destinations <i class="fas fa-chevron-down"></i></a>
         <div class="dropdown">
           {% for country in countries_list %}
-          <a href="{{ url_for('destination_detail', country_name=country) }}">
+          <a href="{{ url_for('main.destination_detail', country_name=country) }}">
             <span class="dropdown-flag">{{ {'USA':'🇺🇸','UK':'🇬🇧','Canada':'🇨🇦','Australia':'🇦🇺','Germany':'🇩🇪','New Zealand':'🇳🇿','Ireland':'🇮🇪','Singapore':'🇸🇬'}[country] }}</span>
             {{ country }}
           </a>
           {% endfor %}
         </div>
       </li>
-      <li><a href="{{ url_for('universities') }}" class="nav-link">Universities</a></li>
-      <li><a href="{{ url_for('cost_calculator') }}" class="nav-link">Cost Calculator</a></li>
-      <li><a href="{{ url_for('recommend') }}" class="nav-link">AI Advisor</a></li>
-      <li><a href="{{ url_for('intakes') }}" class="nav-link">Intakes</a></li>
-      <li><a href="{{ url_for('blog') }}" class="nav-link">Blog</a></li>
-      <li><a href="{{ url_for('contact') }}" class="nav-cta">Free Counselling</a></li>
+      <li><a href="{{ url_for('main.universities') }}" class="nav-link">Universities</a></li>
+      <li><a href="{{ url_for('main.cost_calculator') }}" class="nav-link">Cost Calculator</a></li>
+      <li><a href="{{ url_for('main.recommend') }}" class="nav-link">AI Advisor</a></li>
+      <li><a href="{{ url_for('main.intakes') }}" class="nav-link">Intakes</a></li>
+      <li><a href="{{ url_for('main.blog') }}" class="nav-link">Blog</a></li>
+      <li><a href="{{ url_for('main.contact') }}" class="nav-cta">Free Counselling</a></li>
     </ul>
 
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
@@ -106,7 +106,7 @@
           <h4>Study Destinations</h4>
           <ul>
             {% for country in countries_list %}
-            <li><a href="{{ url_for('destination_detail', country_name=country) }}">{{ country }}</a></li>
+            <li><a href="{{ url_for('main.destination_detail', country_name=country) }}">{{ country }}</a></li>
             {% endfor %}
           </ul>
         </div>
@@ -115,12 +115,12 @@
         <div class="footer-col">
           <h4>Our Services</h4>
           <ul>
-            <li><a href="{{ url_for('recommend') }}">AI University Advisor</a></li>
-            <li><a href="{{ url_for('cost_calculator') }}">Cost Calculator</a></li>
-            <li><a href="{{ url_for('universities') }}">University Search</a></li>
-            <li><a href="{{ url_for('intakes') }}">Intake Tracker</a></li>
-            <li><a href="{{ url_for('blog') }}">Visa Guidance</a></li>
-            <li><a href="{{ url_for('contact') }}">Free Counselling</a></li>
+            <li><a href="{{ url_for('main.recommend') }}">AI University Advisor</a></li>
+            <li><a href="{{ url_for('main.cost_calculator') }}">Cost Calculator</a></li>
+            <li><a href="{{ url_for('main.universities') }}">University Search</a></li>
+            <li><a href="{{ url_for('main.intakes') }}">Intake Tracker</a></li>
+            <li><a href="{{ url_for('main.blog') }}">Visa Guidance</a></li>
+            <li><a href="{{ url_for('main.contact') }}">Free Counselling</a></li>
           </ul>
         </div>
 
@@ -133,7 +133,7 @@
             <li><i class="fas fa-envelope"></i> info@sudoora.com</li>
             <li><i class="fas fa-clock"></i> Mon–Sat: 9AM – 7PM IST</li>
           </ul>
-          <a href="{{ url_for('contact') }}" class="btn btn-gold mt-3">Book Free Session</a>
+          <a href="{{ url_for('main.contact') }}" class="btn btn-gold mt-3">Book Free Session</a>
         </div>
       </div>
     </div>
