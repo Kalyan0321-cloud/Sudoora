@@ -18,6 +18,12 @@ def create_app(config_class=Config):
 
     login_manager.login_view = 'main.admin_login'
 
+    # The admin system uses session-based auth, not Flask-Login's user model.
+    # This no-op loader satisfies Flask-Login's requirement so it doesn't crash.
+    @login_manager.user_loader
+    def load_user(user_id):
+        return None
+
     from app.routes import main
     app.register_blueprint(main)
 
